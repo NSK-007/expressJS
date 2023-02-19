@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+const errorController = require('./controllers/Error404');
+
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, 'public')))
@@ -16,9 +18,6 @@ app.use(shopRouter);
 app.use(contactRouter);
 app.use(successRouter);
 
-app.use((req, res, next) => {
-    // res.status(404).send('<h1>Page Not Found</h1>');
-    res.status(404).sendFile(path.join(__dirname, 'views', 'page-not-found.html'));
-})
+app.use(errorController.error);
 
 app.listen(4000);
